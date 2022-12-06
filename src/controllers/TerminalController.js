@@ -22,6 +22,12 @@ export class Terminal extends EventEmitter {
     Terminal.logs.push(message);
     Terminal.instance.emit(TerminalEventType.CHANGE);
   }
+
+  static execute(command) {
+    if (!command) return false;
+    log(command);
+    return true;
+  }
 }
 
 export function log(message) {

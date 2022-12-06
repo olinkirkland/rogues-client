@@ -11,12 +11,6 @@ function App() {
     // Start connection
     // const connection = Connection.instance;
     // connection.setIsConnected = setIsConnected;]
-    log('Connecting to server...');
-
-    // Every second, log a random lorem ipsum message
-    setInterval(() => {
-      log(lorem());
-    }, 1000);
   }, []);
 
   return (

@@ -29,13 +29,41 @@ function TerminalOverlay() {
     });
   };
 
+  const onKeyPressTerminalInput = (event) => {
+    if (event.key === 'Enter') {
+      submitTerminalInput();
+    }
+  };
+
+  const onClickTerminalInputButton = (event) => {
+    submitTerminalInput();
+  };
+
+  const submitTerminalInput = () => {
+    const input = document.querySelector('.terminal__input input').value;
+
+    const isValid = Terminal.execute(input);
+    if (isValid) {
+      document.querySelector('.terminal__input input').value = '';
+      return;
+    }
+
+    const terminalInput = document.querySelector('.terminal__input');
+    terminalInput.classList.add('shake');
+    setTimeout(() => {
+      terminalInput.classList.remove('shake');
+    }, 500);
+  };
+
   return (
     <div id="terminal">
-      <button className="terminal__close-button">
-        <i className="fas fa-times"></i>
-      </button>
+      <div className="terminal__header">
+        <button className="terminal__header__close-button">
+          <i className="fas fa-times"></i>
+        </button>
 
-      <h2>Terminal</h2>
+        <h2>Terminal</h2>
+      </div>
 
       <div className="terminal__body">
         <ul>
@@ -45,12 +73,19 @@ function TerminalOverlay() {
         </ul>
       </div>
 
-      {/* <div className="terminal__input">
-        <input type="text" placeholder="Enter command..." />
-        <button className="terminal__input-button">
+      <div className="terminal__input">
+        <input
+          type="text"
+          placeholder="Enter command..."
+          onKeyUp={onKeyPressTerminalInput}
+        />
+        <button
+          className="terminal__input-button"
+          onClick={onClickTerminalInputButton}
+        >
           <i className="fas fa-arrow-right"></i>
         </button>
-      </div> */}
+      </div>
     </div>
   );
 }
