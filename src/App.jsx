@@ -1,24 +1,38 @@
-import { useState, useEffect } from 'react';
-import TerminalOverlay from './components/TerminalOverlay';
-import { log } from './controllers/TerminalController';
+import Platform from './components/Platform';
+import PopupContainer from './components/PopupContainer';
+import PopupController from './controllers/PopupController';
+
 import './css/styles.css';
-import './css/terminal.css';
-import { lorem } from './Util';
+
+import './css/modal.css';
+import './css/platform.css';
+import './css/popups.css';
+import { useEffect } from 'react';
+import { PopupSuccess } from './components/popups/PopupSuccess';
 
 function App() {
-  const [isConnected, setIsConnected] = useState(false);
   useEffect(() => {
-    // Start connection
-    // const connection = Connection.instance;
-    // connection.setIsConnected = setIsConnected;]
+    openRepeatingSuccessPopup();
   }, []);
 
   return (
     <div>
-      {/* <Platform /> */}
-      <TerminalOverlay />
+      <PopupContainer />
+      <Platform />
     </div>
   );
+}
+
+function openRepeatingSuccessPopup() {
+  PopupController.open(PopupSuccess, {
+    title: 'Success',
+    message: 'This is a repeating success message',
+    onSuccess: () => {
+      PopupController.close();
+      setTimeout(openRepeatingSuccessPopup, 1000);
+    },
+    opaque: true
+  });
 }
 
 export default App;

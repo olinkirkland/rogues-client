@@ -33,10 +33,21 @@ export function lorem() {
   // Capitalize the first letter
   sentenceWords[0] =
     sentenceWords[0].charAt(0).toUpperCase() + sentenceWords[0].slice(1);
-  const punctuation = ['.', '?', '!', '...'];
-  const sentence =
-    sentenceWords.join(' ') +
-    punctuation[Math.floor(Math.random() * punctuation.length)];
-
+  const sentence = sentenceWords.join(' ') + Math.random() < 0.8 ? '.' : '?';
   return sentence;
+}
+
+const pastelColors = [
+  '#FFB3BA',
+  '#FFDFBA',
+  '#FFFFBA',
+  '#BAFFC9',
+  '#BAE1FF',
+  '#D0BAFF',
+  '#FFBAF2'
+];
+let lastColor = null;
+export function randomColor() {
+  let color = pastelColors[Math.floor(Math.random() * pastelColors.length)];
+  return color === lastColor ? randomColor() : (lastColor = color);
 }
