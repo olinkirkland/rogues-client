@@ -32,7 +32,7 @@ i {
 button {
   cursor: pointer;
 
-  i {
+  i:not(:only-child) {
     margin-right: 0.8rem;
   }
 }

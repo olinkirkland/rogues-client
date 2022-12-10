@@ -49,6 +49,9 @@ export default class Connection extends EventEmitter {
       console.log('🔑', 'No refresh token found in local storage');
       this.login(null, null);
     }
+
+    // Set an interval to refresh the access token every 5 minutes
+    setInterval(() => this.fetchAccessToken(), 1000 * 60 * 5);
   }
 
   async fetchAccessToken() {
@@ -180,7 +183,7 @@ export default class Connection extends EventEmitter {
   }
 
   async validateMyUserData() {
-    console.log('👤', 'Fetching user data', '...');
+    console.log('👤', 'Fetching user data...');
     try {
       const res = await axios.get(SERVER_URL + 'me');
       console.log('✔️ User data fetched');
