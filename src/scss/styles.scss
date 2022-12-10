@@ -22,10 +22,19 @@ span {
   font-size: 1.6rem;
 }
 
+i {
+  font-size: 1.6rem;
+  color: currentColor;
+}
+
 // Buttons
 
 button {
   cursor: pointer;
+
+  i {
+    margin-right: 0.8rem;
+  }
 }
 
 button.btn {

@@ -10,7 +10,7 @@ export default class PopupMediator extends EventEmitter {
   static _instance;
 
   constructor() {
-    //  constructor to enforce singleton
+    // constructor to enforce singleton
     super();
   }
 

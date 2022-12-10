@@ -1,15 +1,11 @@
 import React from 'react';
 import PopupMediator from '../../controllers/PopupController';
-import { randomColor } from '../../Util';
 
 export function PopupSuccess(props) {
   const { title, message, onSuccess } = props;
 
   return (
-    <div
-      className="popup popup--success"
-      style={{ backgroundColor: randomColor() }}
-    >
+    <div className="popup popup--success">
       <div className="popup__header">
         <h2>{title}</h2>
         <button className="btn-icon" onClick={PopupMediator.close}>

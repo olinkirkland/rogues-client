@@ -1,5 +1,5 @@
 import { createElement, useEffect } from 'react';
-import { render, unmountComponentAtNode } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import PopupMediator, { PopupEventType } from '../controllers/PopupController';
 
 export default function PopupContainer() {
@@ -9,22 +9,26 @@ export default function PopupContainer() {
     popupMediator.on(PopupEventType.CLOSE, closePopup);
 
     return () => {
-      popupMediator.off(PopupEventType.OPEN);
-      popupMediator.off(PopupEventType.CLOSE);
+      popupMediator.off(PopupEventType.OPEN, openPopup);
+      popupMediator.off(PopupEventType.CLOSE, closePopup);
     };
   }, []);
 
   return <div id="popupContainer" className="popup-container" />;
 }
 
+let popupContainerRoot;
 function openPopup({ component, popupProps }) {
-  // Unmount all children of popup-frame
-  const popupContainer = document.getElementById('popupContainer');
-  if (popupContainer) unmountComponentAtNode(popupContainer);
+  if (!popupContainerRoot) {
+    popupContainerRoot = createRoot(document.getElementById('popupContainer'));
+  }
 
-  // Get popup-frame element
+  const popupContainer = document.getElementById('popupContainer');
+  // popupContainer.innerHTML = '';
+
   const popup = createElement(component, popupProps);
-  render(popup, popupContainer);
+  popupContainerRoot.render(popup);
+
   if (popupProps.opaque)
     popupContainer.classList.add('popup-container--opaque');
   popupContainer.classList.add('popup-container--active');
@@ -33,7 +37,7 @@ function openPopup({ component, popupProps }) {
 function closePopup() {
   // Close the current popup
   const popupContainer = document.getElementById('popupContainer');
-  unmountComponentAtNode(popupContainer);
+  popupContainer.innerHTML = '';
   popupContainer.classList.remove(
     'popup-container--active',
     'popup-container--opaque'
