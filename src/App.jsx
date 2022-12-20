@@ -10,9 +10,17 @@ import './css/styles.css';
 import './css/modal.css';
 import './css/platform.css';
 import './css/popups.css';
+import { PopupInfo } from './components/popups/PopupInfo';
 
 function App() {
   useEffect(() => {
+    // Show a popup
+    PopupController.open(PopupInfo, {
+      title: 'Connecting...',
+      message: 'Please wait while we connect to the server.',
+      opaque: true
+    });
+
     // Establish a connection
     const connection = Connection.instance;
     connection.initialize();

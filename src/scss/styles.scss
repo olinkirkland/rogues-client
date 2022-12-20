@@ -1,3 +1,5 @@
+@import 'vars';
+
 html {
   font-size: 62.5%;
 }
@@ -7,7 +9,7 @@ html {
   margin: 0;
   padding: 0;
   list-style: none;
-  font-family: 'Georgia', 'Times New Roman', Times, serif;
+  font-family: $font-primary;
 
   &:focus {
     outline: none;
@@ -27,44 +29,61 @@ i {
   color: currentColor;
 }
 
+.logo {
+  font-size: 2.4rem;
+  font-weight: bold;
+  color: $color-dark;
+  font-family: $font-primary;
+}
+
+.li-after-gap {
+  margin-top: auto;
+}
+
 // Buttons
 
 button {
   cursor: pointer;
+  color: $color-dark;
 
   i:not(:only-child) {
     margin-right: 0.8rem;
   }
+
+  &:disabled {
+    cursor: initial;
+    opacity: 0.4;
+  }
 }
 
 button.btn {
-  border: 1px solid rgba(0, 0, 0, 0.2);
+  border: 1px solid $color-medium;
   background-color: transparent;
   padding: 1.2rem 2rem;
   box-shadow: rgba(0, 0, 0, 0) 0px 0px 5px 0px;
   transition: all 0.2s ease-in-out;
 
-  &:hover {
+  &:not(:disabled):hover {
+    background-color: rgba(0, 0, 0, 0.05);
     box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 15px 0px;
   }
 
-  &:active {
+  &:not(:disabled):active {
     box-shadow: rgba(0, 0, 0, 0) 0px 0px 5px 0px;
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: rgba(0, 0, 0, 0.1);
   }
 }
 
 button.btn-icon {
   border: none;
   background-color: transparent;
-  opacity: 0.8;
   aspect-ratio: 1/1;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.6rem;
 
-  &:hover {
+  &:not(:disabled):hover {
     opacity: 1;
   }
 }
@@ -72,10 +91,12 @@ button.btn-icon {
 // Text
 
 h2 {
+  color: $color-dark;
   font-size: 2rem;
 }
 
 p {
+  color: $color-text;
   font-size: 1.6rem;
   letter-spacing: 0.2px;
 }

@@ -8,11 +8,11 @@ import PopupController from './PopupController';
 
 export const DEV_MODE = location.hostname === 'localhost';
 
-export const AUTH_URL = 'http://localhost:3001/';
-export const MAIN_URL = 'http://localhost:3002/';
-export const SERVER_URL = 'http://localhost:3003/';
+export const AUTH_SERVER = 'http://localhost:3001/';
+export const MAIN_SERVER = 'http://localhost:3002/';
+export const SOCKET_SERVER = 'http://localhost:3003/';
 
-let me = {};
+export let me = {};
 
 export const ConnectionEventType = {
   CONNECT: 'connect',
@@ -57,7 +57,7 @@ export default class Connection extends EventEmitter {
   async fetchAccessToken() {
     console.log('🔑', 'Fetching new access token...');
     try {
-      const res = await axios.post(AUTH_URL + 'token', {
+      const res = await axios.post(AUTH_SERVER + 'token', {
         refreshToken: this.refreshToken
       });
       console.log('✔️ Access token fetched');
@@ -66,11 +66,8 @@ export default class Connection extends EventEmitter {
       return res.data.id; // Returns user id
     } catch (err) {
       console.log('❌', `${err}`);
+      localStorage.removeItem('refresh-token');
       this.logout();
-      PopupController.open(PopupInfo, {
-        title: 'Invalid token',
-        message: 'Logging out...'
-      });
     }
   }
 
@@ -88,7 +85,7 @@ export default class Connection extends EventEmitter {
     );
 
     const res = await axios.post(
-      AUTH_URL + 'login',
+      AUTH_SERVER + 'login',
       email && password ? { email: email, password: password } : null
     );
 
@@ -132,20 +129,25 @@ export default class Connection extends EventEmitter {
     this.emit(ConnectionEventType.DISCONNECT);
     PopupController.open(PopupInfo, {
       title: 'Logged out',
-      message: 'You have been logged out.'
+      message: 'You have been logged out.',
+      opaque: true
     });
+
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
   }
 
   connect() {
     PopupController.open(PopupInfo, {
-      title: 'Connecting',
-      message: 'Establishing a connection to the server...'
+      title: 'Connecting...',
+      message: 'Establishing a real-time connection.'
     });
 
     if (this.socket) this.socket.disconnect(); // Disconnect if already connected
 
     console.log('🔌', 'Connecting to socket server...');
-    this.socket = connect(SERVER_URL, {
+    this.socket = connect(SOCKET_SERVER, {
       query: {
         token: this.refreshToken
       }
@@ -153,11 +155,11 @@ export default class Connection extends EventEmitter {
 
     // Add socket listeners
     this.socket.on('connect', async () => {
-      console.log(`✔️ Connected to ${SERVER_URL} as ${me.id}`);
+      console.log(`✔️ Connected to ${SOCKET_SERVER} as ${me.id}`);
       await this.validateMyUserData();
       PopupController.open(PopupSuccess, {
-        title: 'Connection established',
-        message: 'You are now connected to the server.',
+        title: 'Connection established.',
+        message: 'You are now connected.',
         onSuccess: PopupController.close
       });
     });
@@ -185,7 +187,7 @@ export default class Connection extends EventEmitter {
   async validateMyUserData() {
     console.log('👤', 'Fetching user data...');
     try {
-      const res = await axios.get(SERVER_URL + 'me');
+      const res = await axios.get(MAIN_SERVER + 'me');
       console.log('✔️ User data fetched');
       Object.assign(me, res.data);
       this.emit(ConnectionEventType.USER_DATA_CHANGED);

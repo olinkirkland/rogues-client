@@ -24,20 +24,20 @@ function openPopup({ component, popupProps }) {
   }
 
   const popupContainer = document.getElementById('popupContainer');
-  // popupContainer.innerHTML = '';
-
   const popup = createElement(component, popupProps);
   popupContainerRoot.render(popup);
 
-  if (popupProps.opaque)
-    popupContainer.classList.add('popup-container--opaque');
   popupContainer.classList.add('popup-container--active');
+  popupContainer.classList.toggle(
+    'popup-container--opaque',
+    popupProps.opaque === true
+  );
 }
 
 function closePopup() {
   // Close the current popup
+  popupContainerRoot.render(null);
   const popupContainer = document.getElementById('popupContainer');
-  popupContainer.innerHTML = '';
   popupContainer.classList.remove(
     'popup-container--active',
     'popup-container--opaque'
