@@ -157,11 +157,7 @@ export default class Connection extends EventEmitter {
     this.socket.on('connect', async () => {
       console.log(`✔️ Connected to ${SOCKET_SERVER} as ${me.id}`);
       await this.validateMyUserData();
-      PopupController.open(PopupSuccess, {
-        title: 'Connection established.',
-        message: 'You are now connected.',
-        onSuccess: PopupController.close
-      });
+      PopupController.close();
     });
 
     this.socket.on('disconnect', () => {
