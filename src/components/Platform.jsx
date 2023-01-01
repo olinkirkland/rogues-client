@@ -9,9 +9,6 @@ function Platform() {
     <div id="platform">
       <header>
         <span className="logo">Rogues & Heroes</span>
-        <button className="btn-icon">
-          <i className="fas fa-bell" />
-        </button>
       </header>
 
       <nav>

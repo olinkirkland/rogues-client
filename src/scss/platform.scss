@@ -45,3 +45,10 @@ nav {
     }
   }
 }
+
+// Smaller than 1024px
+@media (max-width: 1024px) {
+  #platform {
+    padding: 0;
+  }
+}
